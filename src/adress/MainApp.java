@@ -5,6 +5,7 @@ package adress;/**
 import java.io.IOException;
 
 import adress.model.Person;
+import adress.view.PersonOverviewController;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -77,6 +78,10 @@ public class MainApp extends Application {
 
             // Set person overview into the center of root layout.
             rootLayout.setCenter(personOverview);
+
+            PersonOverviewController controller = loader.getController();
+            controller.setMainApp(this);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
