@@ -5,12 +5,13 @@ package adress.view;
  */
 
 
+import adress.MainApp;
+import adress.model.Person;
+import adress.util.DateUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import adress.MainApp;
-import adress.model.Person;
 
 public class PersonOverviewController {
     @FXML
@@ -35,17 +36,43 @@ public class PersonOverviewController {
 
     private MainApp mainApp;
 
-    public PersonOverviewController(){
+    public PersonOverviewController() {
     }
 
     @FXML
-    private void initialize(){
-        firstNameColumn.setCellValueFactory(cellData -> cellData.getValue().firstNameProperty());
-        lastNameColumn.setCellValueFactory(cellData -> cellData.getValue().lastNameProperty());
+    private void initialize() {
+        firstNameColumn.setCellValueFactory(
+                cellData -> cellData.getValue().firstNameProperty());
+        lastNameColumn.setCellValueFactory(
+                cellData -> cellData.getValue().lastNameProperty());
+
+        showPersonDetails(null);
+
+        personTable.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> showPersonDetails(newValue));
     }
 
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
         personTable.setItems(mainApp.getPersonData());
+    }
+
+    private void showPersonDetails(Person person) {
+        if (person != null) {
+            firstNameLabel.setText(person.getFirstName());
+            lastNameLabel.setText(person.getLastName());
+            streetLabel.setText(person.getStreet());
+            postalCodeLabel.setText(Integer.toString(person.getPostalCode()));
+            cityLabel.setText(person.getCity());
+            birthdayLabel.setText(DateUtil.format(person.getBirthday()));
+        } else {
+            //Person is null, remove all text
+            firstNameLabel.setText("");
+            lastNameLabel.setText("");
+            streetLabel.setText("");
+            postalCodeLabel.setText("");
+            cityLabel.setText("");
+            birthdayLabel.setText("");
+        }
     }
 }
